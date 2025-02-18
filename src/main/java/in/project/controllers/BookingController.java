@@ -1,4 +1,4 @@
-package in.Packers.Movers.Controllers;
+package in.project.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 

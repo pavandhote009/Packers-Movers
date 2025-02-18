@@ -1,6 +1,6 @@
-package in.Packers.Movers.Services;
+package in.project.services;
 
-import in.Packers.Movers.Entity.customerEntity;
+import in.project.entity.customerEntity;
 
 public interface CustomerService {
 		public void addCustomer(customerEntity customer);

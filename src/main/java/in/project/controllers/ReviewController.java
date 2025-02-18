@@ -1,8 +1,8 @@
-package in.Packers.Movers.Controllers;
+package in.project.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AgentController {
+public class ReviewController {
 
 }

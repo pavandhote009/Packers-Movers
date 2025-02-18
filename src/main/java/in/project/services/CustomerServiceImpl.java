@@ -1,8 +1,8 @@
-package in.Packers.Movers.Services;
+package in.project.services;
 
 import org.springframework.stereotype.Service;
 
-import in.Packers.Movers.Entity.customerEntity;
+import in.project.entity.customerEntity;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {

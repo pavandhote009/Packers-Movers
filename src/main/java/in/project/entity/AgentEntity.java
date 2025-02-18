@@ -1,4 +1,4 @@
-package in.Packers.Movers.Entity;
+package in.project.entity;
 
 import java.sql.Timestamp;
 
@@ -16,7 +16,7 @@ import lombok.Data;
 public class AgentEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long agent_id;
+	private Long agentId;
 
 	@Column(name = "email", nullable = false, length = 255)
 	private String email;
@@ -43,7 +43,7 @@ public class AgentEntity {
 	private String status;
 	
 	@Column(name = "rating", nullable = false, length = 255)
-	private String rating;
+	private Double rating;
 	
 	@Column(name = "country", nullable = false, length = 255)
 	private String country;
@@ -51,6 +51,6 @@ public class AgentEntity {
 	@Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp createdAt;
 	
-	@Column(name = "updated_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", nullable = false,  insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private Timestamp updatedAt;
 }

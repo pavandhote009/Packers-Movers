@@ -8,7 +8,7 @@
 		<version>3.4.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>in.project</groupId> <!-- Updated groupId to match your package structure -->
 	<artifactId>Packers_And_Movers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Packers_And_Movers</name>
