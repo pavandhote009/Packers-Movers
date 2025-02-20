@@ -1,8 +1,14 @@
 package in.project.services;
 
-import in.project.entity.customerEntity;
+import java.util.List;
+import java.util.Optional;
+
+import in.project.entity.CustomerEntity;
 
 public interface CustomerService {
-		public void addCustomer(customerEntity customer);
-		
+		 public CustomerEntity saveCustomer(CustomerEntity customer);
+		   public List<CustomerEntity> getAllCustomer();
+		   public Optional<CustomerEntity> getcustomerById(Long customerId);
+		   public CustomerEntity updatecustomer(Long customerId, CustomerEntity customer);
+		   public void deleteCustomer(Long customerId);
 }

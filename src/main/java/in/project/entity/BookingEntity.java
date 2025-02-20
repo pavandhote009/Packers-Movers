@@ -2,6 +2,11 @@ package in.project.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,14 +30,11 @@ public class BookingEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
-	private customerEntity customer;
+	private CustomerEntity customer;
 
 	@ManyToOne
 	@JoinColumn(name = "provider_id")
 	private AgentEntity provider;
-
-
-	
 
 	@Column(name = "booking_Date", nullable = false)
 	private LocalDate bookingDate; // No @Temporal needed for Java 8+ types
@@ -54,11 +56,102 @@ public class BookingEntity {
 	@Column(name = "payment_Status", nullable = false, length = 255)
 	private String paymentStatus;
  
-	@Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private Timestamp createdAt;
-	
-	@Column(name = "updated_at", nullable = false, insertable = false, 
-	        columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-	private Timestamp updatedAt; // Removed `updatable = false`
+
+	@CreationTimestamp
+	@Column(name = "created_at", updatable = false)
+	private LocalDateTime createDate;
+
+	@UpdateTimestamp
+	@Column(name = "updated_at", insertable = false)
+	private LocalDateTime updateDate;
+
+	public Long getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(Long bookingId) {
+		this.bookingId = bookingId;
+	}
+
+	public CustomerEntity getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerEntity customer) {
+		this.customer = customer;
+	}
+
+	public AgentEntity getProvider() {
+		return provider;
+	}
+
+	public void setProvider(AgentEntity provider) {
+		this.provider = provider;
+	}
+
+	public LocalDate getBookingDate() {
+		return bookingDate;
+	}
+
+	public void setBookingDate(LocalDate bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+
+	public String getPickupAddress() {
+		return pickupAddress;
+	}
+
+	public void setPickupAddress(String pickupAddress) {
+		this.pickupAddress = pickupAddress;
+	}
+
+	public String getDropAddress() {
+		return dropAddress;
+	}
+
+	public void setDropAddress(String dropAddress) {
+		this.dropAddress = dropAddress;
+	}
+
+	public Double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public BookingStatus getBookingStatus() {
+		return bookingStatus;
+	}
+
+	public void setBookingStatus(BookingStatus bookingStatus) {
+		this.bookingStatus = bookingStatus;
+	}
+
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+
+	public LocalDateTime getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(LocalDateTime updateDate) {
+		this.updateDate = updateDate;
+	}
+
 
 }
