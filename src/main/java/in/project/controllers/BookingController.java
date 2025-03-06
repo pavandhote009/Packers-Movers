@@ -4,31 +4,48 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.project.entity.BookingEntity;
 import in.project.services.BookingService;
 
 @RestController
-
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BookingController {
-	 @Autowired
-	    private BookingService bookingService;
+	
+		private final BookingService bookingService;
+		@Autowired
+		public BookingController(BookingService bookingService) {
+			this.bookingService=bookingService;
+		}
 
-	    @PostMapping("/create")
-	    public ResponseEntity<BookingEntity> createBooking(@RequestBody BookingEntity booking) {
-	        BookingEntity savedBooking = bookingService.saveBooking(booking);
-	        return ResponseEntity.ok(savedBooking);
+	    @PostMapping("/booking")
+	    public ResponseEntity<?> createBooking(@RequestBody BookingEntity booking) {
+	    	System.out.println("Dekho bhai kya hai to "+booking);
+	          BookingEntity newBooking = bookingService.saveBooking(booking);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Booking Created Successfully ! You will be Notified with confirmation later ! ");
 	    }
+	    
+	    @GetMapping("/{customerId}/quotation")
+		public ResponseEntity<?> getQuotation(@PathVariable Long customerId) {
+			List<BookingEntity> bookings = bookingService.getAllBookings();
+			return ResponseEntity.ok(bookings);
+		}
+	    
+	    
 
-	    @GetMapping("/all")
+	    @GetMapping("/allbooking")
 	    public ResponseEntity<List<BookingEntity>> getAllBookings() {
 	        List<BookingEntity> bookings = bookingService.getAllBookings();
 	        return ResponseEntity.ok(bookings);

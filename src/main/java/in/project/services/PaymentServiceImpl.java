@@ -48,8 +48,9 @@ public class PaymentServiceImpl implements PaymentService {
             updatedPayment.setCustomer(payment.getCustomer());
             updatedPayment.setAgent(payment.getAgent());
             updatedPayment.setTotalAmount(payment.getTotalAmount());
-            updatedPayment.setCommissionAmount(payment.getCommissionAmount());
-            updatedPayment.setProviderAmount(payment.getProviderAmount());
+               updatedPayment.setAdvancePayment(payment.getAdvancePayment());
+               updatedPayment.setRemainingPayment(payment.getRemainingPayment());
+               
             updatedPayment.setPaymentStatus(payment.getPaymentStatus());
             updatedPayment.setPaymentDate(payment.getPaymentDate());
             updatedPayment.setTransactionId(payment.getTransactionId());
