@@ -2,8 +2,11 @@
 package in.project.controllers;
 
 import in.project.entity.CustomerEntity;
+import in.project.repository.CustomerRepository;
 import in.project.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,25 +14,49 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customer")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    private final CustomerRepository customerRepository;
+
+	CustomerController(CustomerRepository customerRepository) {
+		this.customerRepository = customerRepository;
+	}
 
     // Create a new customer
-    @PostMapping("/data")
-    public ResponseEntity<CustomerEntity> saveCustomer(@RequestBody CustomerEntity customer) {
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody CustomerEntity customer){
+    	System.out.println("Dekho bhai kya hai to "+customer);
     	
-    	System.out.println(customer.getFirstName());
     	
-        CustomerEntity savedCustomer = customerService.saveCustomer(customer);
-        
-        return ResponseEntity.ok(savedCustomer);
+    	
+        try {
+            CustomerEntity savedCustomer = customerService.saveCustomer(customer);
+            return ResponseEntity.ok(savedCustomer);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // Return error message if email exists
+        }
+    	
+    	
+    	
+    	
+//		CustomerEntity cs=new CustomerEntity();
+//		cs.setCnfpassword(customer.getCnfpassword());
+//		cs.setEmail(customer.getEmail());
+//		cs.setMobile(customer.getMobile());
+//		cs.setName(customer.getName());
+//		cs.setPassword(customer.getPassword());
+//		
+//		customerRepository.save(cs);
+//		return ResponseEntity.status(HttpStatus.CREATED).body("Customer Registered Successfully");
     }
+    
 
     // Get all customers
-    @GetMapping("/")
+    @GetMapping("/data")
     public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
         List<CustomerEntity> customers = customerService.getAllCustomer();
         return ResponseEntity.ok(customers);
@@ -65,4 +92,22 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    //login customer
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody CustomerEntity customer) {
+        try {
+            CustomerEntity loggedInCustomer = customerService.loginCustomer(customer.getEmail(), customer.getPassword());
+            return ResponseEntity.ok(loggedInCustomer); // Returns customer details if login is successful
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // Returns error message
+        }
+    }
+    
+
+//    @PutMapping("/forgot-password")
+//    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+//        return customerService.forgotPassword(request.getEmail(), request.getNewPassword());
+//    }   for that need entity class
+    
 }

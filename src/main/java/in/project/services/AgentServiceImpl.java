@@ -1,37 +1,44 @@
 package in.project.services;
-
 import java.util.List;
 import java.util.Optional;
-
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import in.project.entity.AgentEntity;
-import in.project.entity.CustomerEntity;
 import in.project.repository.AgentRepository;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 
 @Service
 public class AgentServiceImpl implements AgentService {
 	@Autowired
 	private AgentRepository agentRepository;
 
+//	@Override
+//	public AgentEntity saveAgent(AgentEntity agent) {
+//		return agentRepository.save(agent);
+//	}
+	
+	
+	
 	@Override
-	public AgentEntity saveAgent(AgentEntity agent) {
-		return agentRepository.save(agent);
+	public AgentEntity saveAgent(AgentEntity agent) throws Exception {
+	    if (agentRepository.findByEmail(agent.getEmail()).isPresent()) {
+	        throw new BadRequestException("Email already exists. Please use another email.");
+	    }
+	    return agentRepository.save(agent);
 	}
+
+	
+	
 
 	@Override
 	public List<AgentEntity> getAllAgents() {
 		return agentRepository.findAll();
 	}
+		public Optional<AgentEntity> getAgentEmail(String email) {
+			return agentRepository.findByEmail(email);
+		}
 
-	@Override
-	public Optional<AgentEntity> getAgentById(Long agentId) {
-		return agentRepository.findById(agentId);
-	}
+	
 
 	@Override
 	public AgentEntity updateAgent(Long agentId, AgentEntity agent) {
@@ -43,13 +50,14 @@ public class AgentServiceImpl implements AgentService {
 			AgentEntity uA = existingagent.get();
 			uA.setEmail(agent.getEmail());
 			uA.setPassword(agent.getPassword());
-			uA.setBusinessName(agent.getBusinessName());
-			uA.setServiceModel(agent.getServiceModel());
+			uA.setCompanyName(agent.getCompanyName());
+			uA.setServiceCoverage(agent.getServiceCoverage());
+			uA.setPricePerKm(agent.getPricePerKm());
+			uA.setVehicleType(agent.getVehicleType());
+			uA.setNumberOfVehicles(agent.getNumberOfVehicles());
+			uA.setServices(agent.getServices());
 			uA.setExperience(agent.getExperience());
-			uA.setAvailability(agent.getAvailability());
 			uA.setAddress(agent.getAddress());
-			uA.setStatus(agent.getStatus());
-			uA.setRating(agent.getRating());
 			uA.setCountry(agent.getCountry());
 
 	            return agentRepository.save(uA);
@@ -61,6 +69,27 @@ public class AgentServiceImpl implements AgentService {
 	public void deleteAgent(Long agentId) {
 		agentRepository.deleteById(agentId);
 	}
+	
+
+    // Login method
+	@Override
+	public AgentEntity loginAgent(String email, String password) throws Exception {
+		   Optional<AgentEntity> AgentOptional = agentRepository.findByEmail(email);
+
+	        if (AgentOptional.isPresent()) {
+	            AgentEntity agent = AgentOptional.get();
+	            if (agent.getPassword().equals(password)) {
+	                return agent; // Successful login
+	            } else {
+	                throw new BadRequestException("Invalid email or password!");
+	            }
+	        } else {
+	            throw new BadRequestException("Customer not found with email: " + email);
+	        }
+	}
+
+	
+	
 }
 //private Long agentId;
 //private String email;
