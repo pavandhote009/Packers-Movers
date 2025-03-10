@@ -36,10 +36,10 @@ public class FeedbackServiceImpl implements FeedbackService {
         Optional<FeedbackEntity> existingFeedback = feedbackRepository.findById(feedbackId);
         if (existingFeedback.isPresent()) {
             FeedbackEntity updatedFeedback = existingFeedback.get();
-            updatedFeedback.setComment(feedback.getComment());
             updatedFeedback.setRating(feedback.getRating());
-            updatedFeedback.setEmailId(feedback.getEmailId());
-            updatedFeedback.setFullName(feedback.getFullName());
+               updatedFeedback.setFeedback(feedback.getFeedback());
+               updatedFeedback.setFeedback(feedback.getEmail());
+               
             return feedbackRepository.save(updatedFeedback);
         }
         return null;

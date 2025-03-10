@@ -45,7 +45,8 @@ public  class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingEntity> getAllBookings() {
     	
-        return bookingRepository.findAll();
+        return bookingRepository.findAllWithCustomers(); // Uses custom query to fetch customers
+
     }
 
     @Override

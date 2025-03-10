@@ -11,6 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,13 +33,14 @@ public class BookingEntity {
     @Column(name = "booking_id")
     private Integer bookingId;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer; // Corrected relationship
 
     @ManyToOne
     @JoinColumn(name = "provider_id") // Fixed column name
-    private AgentEntity provider; // Corrected relationship
+    private AgentEntity provider; 
+    
 
     @Column(name = "booking_date")
     private String bookingDate;
@@ -59,7 +61,7 @@ public class BookingEntity {
     private String referance;
     
     @Column(nullable = false, unique = true)
-    private String status; // Example values: PENDING, APPROVED, REJECTED, COMPLETE
+    private String status="Active"; // Example values: PENDING, APPROVED, REJECTED, COMPLETE
 
     @CreationTimestamp
     @Column(name = "created_at")

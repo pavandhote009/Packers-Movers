@@ -88,6 +88,15 @@ public class AgentServiceImpl implements AgentService {
 	        }
 	}
 
+
+
+
+	@Override
+	public Optional<AgentEntity> getAgentById(Long agentId) {
+		return  agentRepository.findById(agentId);
+		
+	}
+
 	
 	
 }

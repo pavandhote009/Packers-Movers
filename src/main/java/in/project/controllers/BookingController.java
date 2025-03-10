@@ -1,6 +1,7 @@
 package in.project.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.project.entity.AgentEntity;
 import in.project.entity.BookingEntity;
+import in.project.entity.CustomerEntity;
 import in.project.services.BookingService;
+import in.project.services.CustomerService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -26,24 +31,48 @@ public class BookingController {
 	
 		private final BookingService bookingService;
 		@Autowired
+		private CustomerService customerService;
+		@Autowired
 		public BookingController(BookingService bookingService) {
 			this.bookingService=bookingService;
 		}
+		@PostMapping("/booking")
+		public ResponseEntity<?> createBooking(@Valid @RequestBody BookingEntity bookingRequest) {
+		    try {
+		        // Validate customer exists using ID from request
+		        Long customerId = bookingRequest.getCustomer().getCustomerId(); // Get from request
+		        Optional<CustomerEntity> customerOptional = customerService.getcustomerById(customerId);
 
-	    @PostMapping("/booking")
-	    public ResponseEntity<?> createBooking(@RequestBody BookingEntity booking) {
-	    	System.out.println("Dekho bhai kya hai to "+booking);
-	          BookingEntity newBooking = bookingService.saveBooking(booking);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Booking Created Successfully ! You will be Notified with confirmation later ! ");
-	    }
-	    
-	    @GetMapping("/{customerId}/quotation")
-		public ResponseEntity<?> getQuotation(@PathVariable Long customerId) {
-			List<BookingEntity> bookings = bookingService.getAllBookings();
-			return ResponseEntity.ok(bookings);
+		        if (customerOptional.isEmpty()) {
+		            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+		                .body(Map.of(
+		                    "status", "error",
+		                    "message", "Customer not found with ID: " + customerId
+		                ));
+		        }
+
+		        // Set customer and other fields from request
+		        bookingRequest.setCustomer(customerOptional.get());
+
+		      
+
+		        // Save booking
+		        BookingEntity savedBooking = bookingService.saveBooking(bookingRequest);
+		        
+		        return ResponseEntity.status(HttpStatus.CREATED)
+		            .body(Map.of(
+		                "status", "success",
+		                "message", "Booking created successfully",
+		                "data", savedBooking
+		            ));
+		    } catch (Exception e) {
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+		            .body(Map.of(
+		                "status", "error",
+		                "message", "Error creating booking: " + e.getMessage()
+		            ));
+		    }
 		}
-	    
-	    
 
 	    @GetMapping("/allbooking")
 	    public ResponseEntity<List<BookingEntity>> getAllBookings() {

@@ -14,19 +14,16 @@ public class FeedbackEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id")  // Explicit column mapping for snake_case
-    private Long feedbackId;        // Correct camelCase naming
-
-    @Column(name = "full_name", nullable = false, length = 255)
-    private String fullName;
+    private Long feedbackId;        // Correct camelCase naming 
 
     @Column(name = "email_id", nullable = false, unique = true, length = 255)
-    private String emailId;
+    private String email;
 
     @Column(name= "rating" ,nullable = false, columnDefinition = "INT CHECK (rating BETWEEN 1 AND 5)")
     private Integer rating;         // Use wrapper class instead of primitive
 
     @Column(name="comment" ,columnDefinition = "TEXT", nullable = false)
-    private String comment;
+    private String feedback;
 
 
 	@CreationTimestamp
@@ -45,21 +42,7 @@ public class FeedbackEntity {
 		this.feedbackId = feedbackId;
 	}
 
-	public String getFullName() {
-		return fullName;
-	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
 
 	public Integer getRating() {
 		return rating;
@@ -69,13 +52,7 @@ public class FeedbackEntity {
 		this.rating = rating;
 	}
 
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+	
 
 	public LocalDateTime getCreateDate() {
 		return createDate;
@@ -94,3 +71,4 @@ public class FeedbackEntity {
 	}
 
 }
+

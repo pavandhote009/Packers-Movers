@@ -3,6 +3,7 @@ package in.project.controllers;
 import in.project.entity.FeedbackEntity;
 import in.project.services.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,23 +11,26 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/feedbacks")
+@RequestMapping("/api/feedback")
 public class FeedbackController {
 
     @Autowired
     private FeedbackService feedbackService;
 
     // Create new feedback
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<FeedbackEntity> saveFeedback(@RequestBody FeedbackEntity feedback) {
         FeedbackEntity savedFeedback = feedbackService.saveFeedback(feedback);
-        return ResponseEntity.ok(savedFeedback);
+        return new  ResponseEntity<FeedbackEntity>(HttpStatus.CREATED);
     }
 
-    // Get all feedback
-    @GetMapping
+ // Get all feedback
+    @GetMapping("/all")
     public ResponseEntity<List<FeedbackEntity>> getAllFeedbacks() {
         List<FeedbackEntity> feedbackList = feedbackService.getAllFeedback();
+        if (feedbackList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(feedbackList);
     }
 

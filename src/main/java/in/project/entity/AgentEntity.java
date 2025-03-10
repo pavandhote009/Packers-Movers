@@ -21,7 +21,7 @@ import lombok.Data;
 @Table(name = "agents")
 public class AgentEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long agentId;
 	
 	@Column(name = "name", nullable = false, length = 255)

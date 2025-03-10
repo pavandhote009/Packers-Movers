@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/api/")
 @CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 
@@ -30,9 +30,6 @@ public class CustomerController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody CustomerEntity customer){
     	System.out.println("Dekho bhai kya hai to "+customer);
-    	
-    	
-    	
         try {
             CustomerEntity savedCustomer = customerService.saveCustomer(customer);
             return ResponseEntity.ok(savedCustomer);
@@ -59,11 +56,12 @@ public class CustomerController {
     @GetMapping("/data")
     public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
         List<CustomerEntity> customers = customerService.getAllCustomer();
+        
         return ResponseEntity.ok(customers);
     }
 
     // Get customer by ID
-    @GetMapping("/{customerId}")
+    @GetMapping("/profile/{customerId}")
     public ResponseEntity<CustomerEntity> getCustomerById(@PathVariable Long customerId) {
         Optional<CustomerEntity> customer = customerService.getcustomerById(customerId);
         return customer.map(ResponseEntity::ok)
@@ -94,9 +92,10 @@ public class CustomerController {
     }
     
     //login customer
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody CustomerEntity customer) {
+    @PostMapping("/login/1")
+    public ResponseEntity<?> customerlogin(@RequestBody CustomerEntity customer) {
         try {
+        	
             CustomerEntity loggedInCustomer = customerService.loginCustomer(customer.getEmail(), customer.getPassword());
             return ResponseEntity.ok(loggedInCustomer); // Returns customer details if login is successful
         } catch (Exception e) {

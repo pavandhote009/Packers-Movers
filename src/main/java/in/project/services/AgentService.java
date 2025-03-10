@@ -9,6 +9,7 @@ public interface AgentService {
 	   public AgentEntity saveAgent(AgentEntity agent) throws Exception;
 	   public List<AgentEntity> getAllAgents();
 	   public Optional<AgentEntity> getAgentEmail(String email);
+	   public Optional<AgentEntity> getAgentById(Long agentId);
 	   public AgentEntity updateAgent(Long agentId, AgentEntity agent);
 	   public void deleteAgent(Long agentId);
 	public AgentEntity loginAgent(String email, String password) throws Exception ;

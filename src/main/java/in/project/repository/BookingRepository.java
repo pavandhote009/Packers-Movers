@@ -13,7 +13,9 @@ import in.project.entity.CustomerEntity;
 @Repository
 public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 	List<BookingEntity> findByCustomer(CustomerEntity customer);
-	
+    
+    @Query("SELECT b FROM BookingEntity b JOIN FETCH b.customer") // Ensures customer data is loaded
+    List<BookingEntity> findAllWithCustomers();
 	
 	
 	@Query(value = """

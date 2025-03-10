@@ -17,7 +17,7 @@ import in.project.repository.AgentRepository;
 import in.project.services.AgentService;
 
 @RestController
-@RequestMapping("/agent")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:5173")
 
 public class AgentController {
@@ -29,10 +29,6 @@ public class AgentController {
     
     @PostMapping(value = "/agentregister", consumes = {"application/json", "application/xml"}, produces = "application/json")
     public ResponseEntity<?> createAgent(@RequestBody AgentEntity agent) {
-    	
-    	
-    	
-    	
             try {
                 AgentEntity savedagent = agentService.saveAgent(agent);
                 return ResponseEntity.ok(savedagent);
@@ -40,12 +36,7 @@ public class AgentController {
                 return ResponseEntity.badRequest().body(e.getMessage()); // Return error message if email exists
             }
         }
-    	
-    	
-    	
-    	
-    	
-    	
+  
 //    	(agentService.saveAgent(agent);)
 //    	AgentEntity uA = new AgentEntity();
 //
@@ -75,8 +66,14 @@ public class AgentController {
     }
    
     @GetMapping("/agent/{agentId}")
-    public ResponseEntity<?> getAgentById(@PathVariable String email) {
-    	        return ResponseEntity.status(HttpStatus.ACCEPTED).body("data fetch successfully");
+	public ResponseEntity<?> getAgentById(@PathVariable Long agentId) {
+		try {
+			AgentEntity agent = agentService.getAgentById(agentId).get();
+			return ResponseEntity.ok(agent);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+    	
     }
     
     @PutMapping("/{agentId}")
@@ -91,7 +88,7 @@ public class AgentController {
         return ResponseEntity.noContent().build();
     }
   
-    @PostMapping("/login")
+    @PostMapping("/login/2")
     public ResponseEntity<?> loginAgent(@RequestBody AgentEntity agent) {
         try {
         	AgentEntity loggedInCustomer = agentService.loginAgent(agent.getEmail(), agent.getPassword());
@@ -100,5 +97,4 @@ public class AgentController {
             return ResponseEntity.badRequest().body(e.getMessage()); // Returns error message
         }
     }
-    
 }
