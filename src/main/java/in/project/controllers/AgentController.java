@@ -82,11 +82,11 @@ public class AgentController {
         return updatedAgent != null ? ResponseEntity.ok(updatedAgent) : ResponseEntity.notFound().build();
     }
     
-    @DeleteMapping("/{agentId}")
+    @DeleteMapping("/deleteagent/{agentId}")
     public ResponseEntity<Void> deleteAgent(@PathVariable Long agentId) {
         agentService.deleteAgent(agentId);
         return ResponseEntity.noContent().build();
-    }
+    }	
   
     @PostMapping("/login/2")
     public ResponseEntity<?> loginAgent(@RequestBody AgentEntity agent) {

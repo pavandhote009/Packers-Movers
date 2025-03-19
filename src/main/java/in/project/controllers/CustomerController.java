@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 
@@ -81,7 +81,7 @@ public class CustomerController {
     }
 
     // Delete customer
-    @DeleteMapping("/{customerId}")
+    @DeleteMapping("/deletecustomer/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Long customerId) {
         try {
             customerService.deleteCustomer(customerId);
@@ -104,9 +104,9 @@ public class CustomerController {
     }
     
 
-//    @PutMapping("/forgot-password")
-//    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-//        return customerService.forgotPassword(request.getEmail(), request.getNewPassword());
-//    }   for that need entity class
+    @PutMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody CustomerEntity request) {
+        return customerService.forgotPassword(request.getEmail(), request.getPassword());
+    }  
     
 }

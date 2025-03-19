@@ -37,9 +37,6 @@ public class BookingEntity {
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer; // Corrected relationship
 
-    @ManyToOne
-    @JoinColumn(name = "provider_id") // Fixed column name
-    private AgentEntity provider; 
     
 
     @Column(name = "booking_date")
@@ -60,8 +57,7 @@ public class BookingEntity {
     @Column(name = "referance")
     private String referance;
     
-    @Column(nullable = false, unique = true)
-    private String status="Active"; // Example values: PENDING, APPROVED, REJECTED, COMPLETE
+// Example values: PENDING, APPROVED, REJECTED, COMPLETE
 
     @CreationTimestamp
     @Column(name = "created_at")
