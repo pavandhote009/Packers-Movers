@@ -30,11 +30,16 @@ public  class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    
+
+    
+    @Autowired
+    private CustomerRepository CustomerRepository;
   
-    @Override
-    public List<Map<String, Object>> quotationDetails(Long customerId) {
-    	return bookingRepository.getQuotation(customerId);
-    }
+//    @Override
+//    public List<Map<String, Object>> quotationDetails(Long customerId) {
+//    	return bookingRepository.getQuotation(customerId);
+//    }
  
 
     @Override
@@ -48,11 +53,15 @@ public  class BookingServiceImpl implements BookingService {
         return bookingRepository.findAllWithCustomers(); // Uses custom query to fetch customers
 
     }
-
-    @Override
-    public Optional<BookingEntity> getBookingById(Long bookingId) {
-        return bookingRepository.findById(bookingId);
+    public List<BookingEntity> getBookingsByCustomerId(Long customerId) {
+        CustomerEntity customer = CustomerRepository.findById(customerId)
+                                       .orElseThrow(() -> new RuntimeException("Customer not found"));
+        return bookingRepository.findByCustomer(customer);
     }
+
+
+
+
 
     @Override
     public BookingEntity updatebooking(Long bookingId, BookingEntity booking) {
@@ -77,6 +86,12 @@ public  class BookingServiceImpl implements BookingService {
     public void deleteBooking(Long bookingId) {
         bookingRepository.deleteById(bookingId);
     }
+
+	@Override
+	public List<Map<String, Object>> quotationDetails(Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import in.project.emailservice.EmailService;
 import in.project.entity.CustomerEntity;
 import in.project.repository.CustomerRepository;
 import jakarta.persistence.Column;
@@ -19,6 +20,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
 //    @Override
 //    public CustomerEntity saveCustomer(CustomerEntity customer) {
@@ -84,18 +88,40 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
     //forgot password
-    public ResponseEntity<String> forgotPassword(String email, String newPassword) {
+
+    public ResponseEntity<String> sendOtp(String email) {
         Optional<CustomerEntity> customerOpt = customerRepository.findByEmail(email);
 
         if (customerOpt.isPresent()) {
             CustomerEntity customer = customerOpt.get();
-            customer.setPassword(newPassword);  // You should hash the password before saving
+            
+            String otp = generateOtp(); // Generate 6-digit OTP
+            customer.setOtp(otp);
             customerRepository.save(customer);
-            return ResponseEntity.ok("Password updated successfully.");
+
+            // Send OTP to email
+            String subject = "Password Reset OTP";
+            String body = "Your OTP for password reset is: " + otp;
+            emailService.sendEmail(email, subject, body);
+
+            return ResponseEntity.ok("OTP sent successfully.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found. Please register first.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
         }
     }
+    private String generateOtp() {
+        return String.valueOf((int) (Math.random() * 900000) + 100000); // 6-digit OTP
+    }
+
+
+
+
+
+	
+
+
+
+    
     
     
 }

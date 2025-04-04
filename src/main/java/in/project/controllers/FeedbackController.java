@@ -1,6 +1,8 @@
 package in.project.controllers;
 
+import in.project.entity.CustomerEntity;
 import in.project.entity.FeedbackEntity;
+import in.project.repository.CustomerRepository;
 import in.project.services.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,9 @@ public class FeedbackController {
 
     @Autowired
     private FeedbackService feedbackService;
+    
+    @Autowired
+    private CustomerRepository customerRepository;
 
     // Create new feedback
     @PostMapping("/save")
@@ -27,7 +32,9 @@ public class FeedbackController {
  // Get all feedback
     @GetMapping("/all")
     public ResponseEntity<List<FeedbackEntity>> getAllFeedbacks() {
+    	List<CustomerEntity> all = customerRepository.findAll();
         List<FeedbackEntity> feedbackList = feedbackService.getAllFeedback();
+        
         if (feedbackList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

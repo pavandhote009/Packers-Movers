@@ -33,6 +33,10 @@ public class CustomerEntity {  // Class name should be PascalCase
     
     @Column(name = "mobile", nullable = false)      // Match phone length
     private String mobile;
+    
+    @Column(name = "otp")
+    private String otp;
+    
 	@CreationTimestamp
 	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createDate;

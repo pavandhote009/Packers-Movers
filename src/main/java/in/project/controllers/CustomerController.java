@@ -1,6 +1,7 @@
 
 package in.project.controllers;
 
+import in.project.dto.ResetPasswordRequest;
 import in.project.entity.CustomerEntity;
 import in.project.repository.CustomerRepository;
 import in.project.services.CustomerService;
@@ -103,10 +104,48 @@ public class CustomerController {
         }
     }
     
-
-    @PutMapping("/forgot-password")
+//    forgot password
+    @PutMapping("/forgotpassword")
     public ResponseEntity<String> forgotPassword(@RequestBody CustomerEntity request) {
-        return customerService.forgotPassword(request.getEmail(), request.getPassword());
-    }  
+        return customerService.sendOtp(request.getEmail());
+    } 
+    
+    // Verify OTP and reset password
+    @PutMapping("/verifyotp")
+    public ResponseEntity<String> verifyOtp(@RequestBody ResetPasswordRequest request) {
+        Optional<CustomerEntity> customerOpt = customerRepository.findByEmail(request.getEmail());
+        System.out.println("Customer otp is "+customerOpt.get().getOtp());
+
+        if (customerOpt.isPresent()) {
+            CustomerEntity customer = customerOpt.get();
+
+            if (customer.getOtp() != null && customer.getOtp().equals(request.getOtp())) {
+                return ResponseEntity.ok("OTP verified successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or expired OTP.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
+        }
+    }
+    
+    @PutMapping("/resetpassword")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        Optional<CustomerEntity> customerOpt = customerRepository.findByEmail(request.getEmail());
+
+        if (customerOpt.isPresent()) {
+            CustomerEntity customer = customerOpt.get();
+
+            customer.setPassword(request.getNewPassword()); // Storing without hashing (as per your choice)
+            customerRepository.save(customer);
+
+            return ResponseEntity.ok("Password updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
+        }
+    }
+
+
+
     
 }

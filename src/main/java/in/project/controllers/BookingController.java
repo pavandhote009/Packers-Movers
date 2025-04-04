@@ -69,13 +69,17 @@ public class BookingController {
 	        List<BookingEntity> bookings = bookingService.getAllBookings();
 	        return ResponseEntity.ok(bookings);
 	    }
-
-	    @GetMapping("/{bookingId}")
-	    public ResponseEntity<BookingEntity> getBookingById(@PathVariable Long bookingId) {
-	        Optional<BookingEntity> booking = bookingService.getBookingById(bookingId);
-	        return booking.map(ResponseEntity::ok)
-	                      .orElseGet(() -> ResponseEntity.notFound().build());
+	    @GetMapping("/booking/{customerId}")
+	    public ResponseEntity<List<BookingEntity>> getBookingsByCustomer(@PathVariable Long customerId) {
+	        List<BookingEntity> bookings = bookingService.getBookingsByCustomerId(customerId);
+	        
+	        if (bookings.isEmpty()) {
+	            return ResponseEntity.notFound().build(); // No bookings found
+	        }
+	        
+	        return ResponseEntity.ok(bookings); // Return all bookings
 	    }
+
 
 	    @PutMapping("/update/{bookingId}")
 	    public ResponseEntity<BookingEntity> updateBooking(@PathVariable Long bookingId, @RequestBody BookingEntity booking) {
@@ -83,7 +87,7 @@ public class BookingController {
 	        return updatedBooking != null ? ResponseEntity.ok(updatedBooking) : ResponseEntity.notFound().build();
 	    }
 
-	    @DeleteMapping("/delete/{bookingId}")
+	    @DeleteMapping("/deletebooking/{bookingId}")
 	    public ResponseEntity<Void> deleteBooking(@PathVariable Long bookingId) {
 	        bookingService.deleteBooking(bookingId);
 	        return ResponseEntity.noContent().build();

@@ -105,9 +105,9 @@ public class QuotationController {
     }
 
     // Delete quotation
-    @DeleteMapping("/{quotationId}")
-    public ResponseEntity<Void> deleteQuotation(@PathVariable Long id) {
-        quotationService.deleteQuotation(id);
+    @DeleteMapping("/quotations/{quotationId}")
+    public ResponseEntity<Void> deleteQuotation(@PathVariable Long quotationId) {
+        quotationService.deleteQuotation(quotationId);
         return ResponseEntity.noContent().build();
     }
 }

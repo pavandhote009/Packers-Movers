@@ -50,7 +50,7 @@ public class QuotationServiceImpl implements QuotationService {
 //			quotation.setPayment(updatedQuotation.getPayment());
 
 			// Updating Service Details
-			quotation.setServiceType(updatedQuotation.getServiceType());
+			quotation.setService(updatedQuotation.getService());
 			quotation.setDistanceInKm(updatedQuotation.getDistanceInKm());
 			quotation.setPricePerKm(updatedQuotation.getPricePerKm());
 			quotation.setTotalPrice(updatedQuotation.getTotalPrice());

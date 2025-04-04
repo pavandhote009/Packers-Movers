@@ -32,8 +32,8 @@ public class QuotationEntity {
 
 	
 	// Service Details
-	@Column(name = "service_type", nullable = false, length = 255)
-	private String serviceType;
+	@Column(name = "service", nullable = false, length = 255)
+	private String service;
 
 	@Column(name = "distance_in_km", nullable = false)
 	private Double distanceInKm;

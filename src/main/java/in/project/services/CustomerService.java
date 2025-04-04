@@ -14,6 +14,6 @@ public interface CustomerService {
 		   public CustomerEntity updatecustomer(Long customerId, CustomerEntity customer);
 		   public void deleteCustomer(Long customerId);
 		   public CustomerEntity loginCustomer(String email, String password) throws Exception;
-		   ResponseEntity<String> forgotPassword(String email, String newPassword);
+		   ResponseEntity<String> sendOtp(String email);
 
 }
