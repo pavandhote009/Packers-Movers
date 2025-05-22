@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
     }
-}
+}	
 
 
 //http://127.0.0.1:1111/
